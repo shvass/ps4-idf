@@ -262,7 +262,7 @@ ps4_status_t parsePacketStatus(uint8_t* packet) {
 /*   S E N S O R S  */
 /********************/
 ps4_sensor_t parsePacketSensor(uint8_t* packet) {
-  ps4_sensor_t ps4Sensor;
+  ps4_sensor_t ps4Sensor = {};
   /*
       const uint16_t offset = 0x200;
 
