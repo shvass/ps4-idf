@@ -6,6 +6,8 @@
 #include "esp_spp_api.h"
 #include "ps4.h"
 #include "ps4_int.h"
+#include "nvs.h"
+#include "nvs_flash.h"
 
 #define PS4_TAG "PS4_SPP"
 
@@ -28,7 +30,12 @@ static void sppCallback(esp_spp_cb_event_t event, esp_spp_cb_param_t* param);
 **
 *******************************************************************************/
 void sppInit() {
-  esp_err_t ret;
+
+  esp_err_t ret = nvs_flash_init();
+  if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND) {
+      ESP_ERROR_CHECK(nvs_flash_erase());
+      ret = nvs_flash_init();
+  }
 
 #ifndef ARDUINO_ARCH_ESP32
   esp_bt_controller_config_t bt_cfg = BT_CONTROLLER_INIT_CONFIG_DEFAULT();
